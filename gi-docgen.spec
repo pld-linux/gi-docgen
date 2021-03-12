@@ -12,9 +12,12 @@ Group:		Development/Tools
 #Source0Download: https://gitlab.gnome.org/ebassi/gi-docgen/-/tags
 Source0:	https://gitlab.gnome.org/ebassi/gi-docgen/-/archive/%{version}/%{name}-%{version}.tar.bz2
 # Source0-md5:	d8c01aacbaefe8df4ffc9f8c67e51f21
+Patch0:		%{name}-main.patch
 URL:		https://gitlab.gnome.org/ebassi/gi-docgen
 BuildRequires:	python3-modules >= 1:3.6
 BuildRequires:	python3-setuptools
+BuildRequires:	rpm-pythonprov
+BuildRequires:	rpmbuild(macros) >= 1.714
 BuildRequires:	sed >= 4.0
 %if %{with doc}
 BuildRequires:	python3-Sphinx
@@ -56,6 +59,7 @@ Dokumentacja do narzędzia GI-Docgen.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %{__sed} -i -e '/^ *wheel$/d' setup.cfg
 
@@ -71,6 +75,16 @@ rm -rf $RPM_BUILD_ROOT
 
 %py3_install
 
+install -d $RPM_BUILD_ROOT%{_npkgconfigdir}
+cat >$RPM_BUILD_ROOT%{_npkgconfigdir}/gi-docgen.pc <<EOF
+prefix=%{_prefix}
+bindir=%{_bindir}
+
+Name: gi-docgen
+Description: Documentation tool for GObject-based libraries
+Version: %{version}
+EOF
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -80,6 +94,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/gi-docgen
 %{py3_sitescriptdir}/gidocgen
 %{py3_sitescriptdir}/gi_docgen-%{version}-py*.egg-info
+%{_npkgconfigdir}/gi-docgen.pc
 
 %files doc
 %defattr(644,root,root,755)

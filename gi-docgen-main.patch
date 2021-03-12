@@ -1,0 +1,12 @@
+--- gi-docgen-2021.2/gidocgen/gidocmain.py.orig	2021-03-12 13:46:51.000000000 +0100
++++ gi-docgen-2021.2/gidocgen/gidocmain.py	2021-03-12 20:06:59.426108229 +0100
+@@ -129,5 +129,8 @@
+     return GIDocGenApp().run(args)
+ 
+ 
++def main():
++    return run_main(sys.argv[1:])
++
+ if __name__ == '__main__':
+-    sys.exit(run_main(sys.argv[1:]))
++    sys.exit(main())
