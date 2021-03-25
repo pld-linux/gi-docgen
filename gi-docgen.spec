@@ -96,6 +96,8 @@ rm -rf $RPM_BUILD_ROOT
 %{py3_sitescriptdir}/gi_docgen-%{version}-py*.egg-info
 %{_npkgconfigdir}/gi-docgen.pc
 
+%if %{with doc}
 %files doc
 %defattr(644,root,root,755)
 %doc docs/_build/{_static,tools,*.html,*.js}
+%endif
