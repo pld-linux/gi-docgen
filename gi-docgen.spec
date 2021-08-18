@@ -5,20 +5,20 @@
 Summary:	Documentation tool for GObject-based libraries
 Summary(pl.UTF-8):	Narzędzie do dokumentowania bibliotek opartych na GObject
 Name:		gi-docgen
-Version:	2021.2
+Version:	2021.7
 Release:	1
 License:	Apache v2.0 or GPL v3+
 Group:		Development/Tools
-#Source0Download: https://gitlab.gnome.org/ebassi/gi-docgen/-/tags
-Source0:	https://gitlab.gnome.org/ebassi/gi-docgen/-/archive/%{version}/%{name}-%{version}.tar.bz2
-# Source0-md5:	d8c01aacbaefe8df4ffc9f8c67e51f21
-Patch0:		%{name}-main.patch
-URL:		https://gitlab.gnome.org/ebassi/gi-docgen
+Source0:	https://download.gnome.org/sources/gi-docgen/2021/%{name}-%{version}.tar.xz
+# Source0-md5:	fd045b8e3ccd1b1305e5e87afa728ac0
+URL:		https://gitlab.gnome.org/GNOME/gi-docgen
 BuildRequires:	python3-modules >= 1:3.6
 BuildRequires:	python3-setuptools
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.714
 BuildRequires:	sed >= 4.0
+BuildRequires:	tar >= 1:1.22
+BuildRequires:	xz
 %if %{with doc}
 BuildRequires:	python3-Sphinx
 BuildRequires:	python3-jinja2
@@ -59,9 +59,6 @@ Dokumentacja do narzędzia GI-Docgen.
 
 %prep
 %setup -q
-%patch0 -p1
-
-%{__sed} -i -e '/^ *wheel$/d' setup.cfg
 
 %build
 %py3_build
@@ -80,10 +77,9 @@ cat >$RPM_BUILD_ROOT%{_npkgconfigdir}/gi-docgen.pc <<EOF
 prefix=%{_prefix}
 bindir=%{_bindir}
 
-Name: gi-docgen
-Description: Documentation tool for GObject-based libraries
-Version: %{version}
 EOF
+
+sed -e 's/@VERSION@/%{version}/' gi-docgen.pc.in >>$RPM_BUILD_ROOT%{_npkgconfigdir}/gi-docgen.pc
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -95,6 +91,7 @@ rm -rf $RPM_BUILD_ROOT
 %{py3_sitescriptdir}/gidocgen
 %{py3_sitescriptdir}/gi_docgen-%{version}-py*.egg-info
 %{_npkgconfigdir}/gi-docgen.pc
+%{_mandir}/man1/gi-docgen.1*
 
 %if %{with doc}
 %files doc
