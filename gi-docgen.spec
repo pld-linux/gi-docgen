@@ -5,12 +5,12 @@
 Summary:	Documentation tool for GObject-based libraries
 Summary(pl.UTF-8):	Narzędzie do dokumentowania bibliotek opartych na GObject
 Name:		gi-docgen
-Version:	2022.2
+Version:	2023.1
 Release:	1
 License:	Apache v2.0 or GPL v3+
 Group:		Development/Tools
-Source0:	https://download.gnome.org/sources/gi-docgen/2022/%{name}-%{version}.tar.xz
-# Source0-md5:	577c24a2cb1dcc47ce78db310eb4769c
+Source0:	https://download.gnome.org/sources/gi-docgen/2023/%{name}-%{version}.tar.xz
+# Source0-md5:	a856428dce31c1b63fd466f4bef0fd35
 URL:		https://gitlab.gnome.org/GNOME/gi-docgen
 BuildRequires:	python3-modules >= 1:3.6
 BuildRequires:	python3-setuptools
@@ -26,7 +26,9 @@ BuildRequires:	python3-markdown >= 3.2
 BuildRequires:	python3-markupsafe
 BuildRequires:	python3-pygments
 BuildRequires:	python3-sphinx_rtd_theme
-BuildRequires:	python3-toml
+%if "%{py3_ver}" != "3.11"
+BuildRequires:	python3-tomli
+%endif
 BuildRequires:	python3-typogrify
 %endif
 BuildArch:	noarch
@@ -71,15 +73,6 @@ Dokumentacja do narzędzia GI-Docgen.
 rm -rf $RPM_BUILD_ROOT
 
 %py3_install
-
-install -d $RPM_BUILD_ROOT%{_npkgconfigdir}
-cat >$RPM_BUILD_ROOT%{_npkgconfigdir}/gi-docgen.pc <<EOF
-prefix=%{_prefix}
-bindir=%{_bindir}
-
-EOF
-
-sed -e 's/@VERSION@/%{version}/' gi-docgen.pc.in >>$RPM_BUILD_ROOT%{_npkgconfigdir}/gi-docgen.pc
 
 %clean
 rm -rf $RPM_BUILD_ROOT
