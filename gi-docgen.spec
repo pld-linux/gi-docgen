@@ -5,12 +5,12 @@
 Summary:	Documentation tool for GObject-based libraries
 Summary(pl.UTF-8):	Narzędzie do dokumentowania bibliotek opartych na GObject
 Name:		gi-docgen
-Version:	2023.2
+Version:	2023.3
 Release:	1
 License:	Apache v2.0 or GPL v3+
 Group:		Development/Tools
 Source0:	https://download.gnome.org/sources/gi-docgen/2023/%{name}-%{version}.tar.xz
-# Source0-md5:	de59b51c1286e2205b2b044e75254c55
+# Source0-md5:	b1730da9a75566306d6464f60dbe1262
 URL:		https://gitlab.gnome.org/GNOME/gi-docgen
 BuildRequires:	python3-modules >= 1:3.6
 BuildRequires:	python3-setuptools
